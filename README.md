@@ -159,6 +159,8 @@ CREATE TABLE Products (
    - Create/edit/sell listings
    - Category/search behavior
    - Contact method visibility rules
+   
+codex/create-student-classifieds-project-documentation
 
 ## 9. MVP Acceptance Criteria (Merge-Ready Checklist)
 
@@ -193,3 +195,5 @@ Use this checklist before merging feature work into main:
 - [ ] Environment variables are configured on Koyeb/Vercel.
 - [ ] End-to-end smoke test passes on deployed frontend + backend.
 
+=======
+main
