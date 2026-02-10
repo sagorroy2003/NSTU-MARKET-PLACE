@@ -1,7 +1,6 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
-
 import { prisma } from "./lib/prisma";
 import { errorHandler } from "./middleware/errorHandler";
 
@@ -50,3 +49,8 @@ async function startServer() {
 }
 
 void startServer();
+
+app.listen(port, () => {
+  console.log(`Backend running on http://localhost:${port}`);
+});
+
