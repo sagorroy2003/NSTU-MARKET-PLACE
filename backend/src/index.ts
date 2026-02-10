@@ -12,6 +12,11 @@ dotenv.config();
 const app = express();
 const port = Number(process.env.PORT) || 4000;
 
+
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET is required");
+}
+
 app.use(cors());
 app.use(express.json());
 

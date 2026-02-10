@@ -16,27 +16,27 @@ export async function verifyPassword(password: string, passwordHash: string): Pr
   return bcrypt.compare(password, passwordHash);
 }
 
-export function signToken(payload: AuthTokenPayload): string {
+function getJwtSecret(): string {
   const jwtSecret = process.env.JWT_SECRET;
 
   if (!jwtSecret) {
     throw new Error("JWT_SECRET is not configured");
   }
 
-  return jwt.sign(payload, jwtSecret, { expiresIn: "7d" });
+  return jwtSecret;
+}
+
+export function signToken(payload: AuthTokenPayload): string {
+  return jwt.sign(payload, getJwtSecret(), { expiresIn: "7d" });
 }
 
 export function verifyToken(token: string): AuthTokenPayload {
-  const jwtSecret = process.env.JWT_SECRET;
-
-  if (!jwtSecret) {
-    throw new Error("JWT_SECRET is not configured");
-  }
-
-  return jwt.verify(token, jwtSecret) as AuthTokenPayload;
+  return jwt.verify(token, getJwtSecret()) as AuthTokenPayload;
 }
 
 export function isUniversityEmail(email: string): boolean {
-  const domain = (process.env.UNIVERSITY_EMAIL_DOMAIN || "university.edu").toLowerCase();
-  return email.toLowerCase().endsWith(`@${domain}`);
+  const domain = (process.env.UNIVERSITY_EMAIL_DOMAIN || "student.nstu.edu.bd").toLowerCase().trim();
+  const normalizedEmail = email.toLowerCase().trim();
+
+  return normalizedEmail.endsWith(`@${domain}`);
 }

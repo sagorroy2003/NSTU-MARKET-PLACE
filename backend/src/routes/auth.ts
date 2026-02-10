@@ -19,13 +19,20 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
       return;
     }
 
-    if (!isUniversityEmail(email)) {
-      res.status(400).json({ message: "Only university email addresses are allowed" });
+    if (password.length < 8) {
+      res.status(400).json({ message: "Password must be at least 8 characters" });
       return;
     }
 
+    if (!isUniversityEmail(email)) {
+      res.status(400).json({ message: "Only valid student university email addresses are allowed" });
+      return;
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+
     const existingUser = await prisma.user.findUnique({
-      where: { email: email.toLowerCase() },
+      where: { email: normalizedEmail },
     });
 
     if (existingUser) {
@@ -33,12 +40,12 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
       return;
     }
 
-    const hashedPassword = await hashPassword(password);
+    const passwordHash = await hashPassword(password);
 
     const user = await prisma.user.create({
       data: {
-        email: email.toLowerCase(),
-        password: hashedPassword,
+        email: normalizedEmail,
+        passwordHash,
       },
       select: {
         id: true,
@@ -67,8 +74,10 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
       return;
     }
 
+    const normalizedEmail = email.trim().toLowerCase();
+
     const user = await prisma.user.findUnique({
-      where: { email: email.toLowerCase() },
+      where: { email: normalizedEmail },
     });
 
     if (!user) {
@@ -76,7 +85,7 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
       return;
     }
 
-    const isValidPassword = await verifyPassword(password, user.password);
+    const isValidPassword = await verifyPassword(password, user.passwordHash);
 
     if (!isValidPassword) {
       res.status(401).json({ message: "Invalid credentials" });

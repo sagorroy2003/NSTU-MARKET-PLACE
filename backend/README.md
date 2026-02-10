@@ -10,18 +10,23 @@
    npm install
    ```
 2. Create `.env` from `.env.example` and set:
+   - `PORT`
    - `DATABASE_URL`
-   - `JWT_SECRET`
-   - optional `UNIVERSITY_EMAIL_DOMAIN` (default: `university.edu`)
-3. Run migrations:
+   - `JWT_SECRET` (required)
+   - optional `UNIVERSITY_EMAIL_DOMAIN` (default: `student.nstu.edu.bd`)
+3. Generate Prisma client:
+   ```bash
+   npm run prisma:generate
+   ```
+4. Run migrations:
    ```bash
    npm run prisma:migrate
    ```
-4. Seed default categories:
+5. Seed default categories:
    ```bash
    npm run prisma:seed
    ```
-5. Start development server:
+6. Start development server:
    ```bash
    npm run dev
    ```
@@ -29,5 +34,5 @@
 ## API
 - `GET /health` -> `{ "status": "ok" }`
 - `GET /categories` -> all categories sorted by name
-- `POST /auth/signup` -> create user + return JWT
+- `POST /auth/signup` -> create user (student domain only) + return JWT
 - `POST /auth/login` -> return JWT for valid credentials
