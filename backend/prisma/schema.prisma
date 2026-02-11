@@ -8,10 +8,10 @@ datasource db {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  email        String   @unique
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
   passwordHash String
-  createdAt    DateTime @default(now())
+  createdAt    DateTime  @default(now())
   products     Product[]
 
   @@map("Users")
@@ -43,5 +43,7 @@ model Product {
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   category Category @relation(fields: [categoryId], references: [id])
 
+  @@index([userId])
+  @@index([categoryId])
   @@map("Products")
 }
