@@ -1,11 +1,8 @@
 -- CreateTable
 CREATE TABLE `Users` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `passwordHash` VARCHAR(191) NOT NULL,
-    `phoneNumber` VARCHAR(191) NULL,
-    `messengerUsername` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `Users_email_key`(`email`),
