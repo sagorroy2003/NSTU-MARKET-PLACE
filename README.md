@@ -1,5 +1,34 @@
 # Student Classifieds — University Marketplace
 
+<table border="0">
+  <tr>
+    <td width="100%" valign="top">
+      <h3>🛒 UniBazer - Multi-Vendor Student Marketplace</h3>
+      <img src="https://img.shields.io/badge/Status-In%20Progress-yellow?style=for-the-badge&logo=blueprint" />
+      <img src="https://img.shields.io/badge/Architecture-MVC-blue?style=for-the-badge" />
+      <p align="justify">
+        A specialized e-commerce ecosystem designed for university students to trade safely. Unlike standard shops, UniBazer supports multiple independent sellers (vendors) within a single platform, requiring complex logic for product management and user roles.
+      </p>
+      <h4>✨ Key Multi-Vendor Features:</h4>
+      <ul>
+        <li><b>Vendor Dashboard:</b> Private interface for students to list products, manage inventory, and track sales.</li>
+        <li><b>Role-Based Access:</b> Distinct permissions for Buyers, Vendors, and Platform Administrators.</li>
+        <li><b>Unified Cart:</b> Ability for buyers to checkout with items from multiple student vendors simultaneously.</li>
+        <li><b>Campus Verification:</b> Secure registration system to ensure a trusted student-only community.</li>
+      </ul>
+      <h4>🛠️ Planned Tech Stack:</h4>
+      <p>
+        <img src="https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB" />
+        <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white" />
+        <img src="https://img.shields.io/badge/Express.js-000000?style=flat-square&logo=express&logoColor=white" />
+        <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white" />
+        <img src="https://img.shields.io/badge/Aiven-FF4F00?style=flat-square&logo=aiven&logoColor=white" />
+      </p>
+      <a href="https://github.com/sagorroy2003/UniBazer"><b>Explore the Repository →</b></a>
+    </td>
+  </tr>
+</table>
+
 ## 1. Project Overview
 
 **Student Classifieds** is a web application designed to be the central marketplace for university students. It addresses the inefficiency and clutter of using social media groups for buying and selling used goods by providing a dedicated, secure, and easy-to-navigate platform.
