@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 
+import { Navbar } from "../components/navbar";
+import { AuthProvider } from "../context/auth-context";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "NSTU Marketplace",
-  description: "Frontend scaffold for student marketplace",
+  description: "Student marketplace MVP frontend",
 };
 
 export default function RootLayout({
@@ -14,7 +16,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          <Navbar />
+          <main className="mx-auto w-full max-w-5xl px-4 py-6">{children}</main>
+        </AuthProvider>
+      </body>
     </html>
   );
 }
