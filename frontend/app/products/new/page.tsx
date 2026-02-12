@@ -1,10 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-import { ProtectedRoute } from "../../../components/protected-route";
-import { apiRequest } from "../../../lib/api";
+import { ProtectedRoute } from "@/components/protected-route";
+import { apiRequest } from "@/lib/api";
 
 type Category = {
   id: number;
@@ -56,8 +56,10 @@ function NewProductForm() {
   useEffect(() => {
     async function loadCategories() {
       try {
+        setError(null);
         const data = await apiRequest<Category[]>("/categories");
         setCategories(data);
+
         if (data.length > 0) {
           setForm((prev) => ({ ...prev, categoryId: data[0].id }));
         }
@@ -82,6 +84,7 @@ function NewProductForm() {
           price: Number(form.price),
         },
       });
+
       router.push(`/products/${created.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create product");
@@ -95,12 +98,27 @@ function NewProductForm() {
       <h1 className="mb-4 text-xl font-semibold">Create Product</h1>
 
       <form className="space-y-3" onSubmit={onSubmit}>
+        <label className="sr-only" htmlFor="category">
+          Category
+        </label>
         <select
+          id="category"
           className="w-full rounded border px-3 py-2"
           value={form.categoryId}
-          onChange={(event) => setForm((prev) => ({ ...prev, categoryId: Number(event.target.value) }))}
+          onChange={(event) =>
+            setForm((prev) => ({
+              ...prev,
+              categoryId: Number(event.target.value),
+            }))
+          }
           required
         >
+          {categories.length === 0 ? (
+            <option value={0} disabled>
+              Loading categories...
+            </option>
+          ) : null}
+
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.name}
@@ -112,7 +130,9 @@ function NewProductForm() {
           className="w-full rounded border px-3 py-2"
           placeholder="Title"
           value={form.title}
-          onChange={(event) => setForm((prev) => ({ ...prev, title: event.target.value }))}
+          onChange={(event) =>
+            setForm((prev) => ({ ...prev, title: event.target.value }))
+          }
           required
         />
 
@@ -120,9 +140,11 @@ function NewProductForm() {
           className="w-full rounded border px-3 py-2"
           placeholder="Price"
           type="number"
-          min="1"
+          min={1}
           value={form.price}
-          onChange={(event) => setForm((prev) => ({ ...prev, price: Number(event.target.value) }))}
+          onChange={(event) =>
+            setForm((prev) => ({ ...prev, price: Number(event.target.value) }))
+          }
           required
         />
 
@@ -130,28 +152,36 @@ function NewProductForm() {
           className="w-full rounded border px-3 py-2"
           placeholder="Description (optional)"
           value={form.description}
-          onChange={(event) => setForm((prev) => ({ ...prev, description: event.target.value }))}
+          onChange={(event) =>
+            setForm((prev) => ({ ...prev, description: event.target.value }))
+          }
         />
 
         <input
           className="w-full rounded border px-3 py-2"
           placeholder="Location (optional)"
           value={form.location}
-          onChange={(event) => setForm((prev) => ({ ...prev, location: event.target.value }))}
+          onChange={(event) =>
+            setForm((prev) => ({ ...prev, location: event.target.value }))
+          }
         />
 
         <input
           className="w-full rounded border px-3 py-2"
           placeholder="Image URL (optional)"
           value={form.imageUrl}
-          onChange={(event) => setForm((prev) => ({ ...prev, imageUrl: event.target.value }))}
+          onChange={(event) =>
+            setForm((prev) => ({ ...prev, imageUrl: event.target.value }))
+          }
         />
 
         <label className="flex items-center gap-2">
           <input
             type="checkbox"
             checked={Boolean(form.showEmail)}
-            onChange={(event) => setForm((prev) => ({ ...prev, showEmail: event.target.checked }))}
+            onChange={(event) =>
+              setForm((prev) => ({ ...prev, showEmail: event.target.checked }))
+            }
           />
           Show Email
         </label>
@@ -160,7 +190,12 @@ function NewProductForm() {
           <input
             type="checkbox"
             checked={Boolean(form.showWhatsapp)}
-            onChange={(event) => setForm((prev) => ({ ...prev, showWhatsapp: event.target.checked }))}
+            onChange={(event) =>
+              setForm((prev) => ({
+                ...prev,
+                showWhatsapp: event.target.checked,
+              }))
+            }
           />
           Show Whatsapp
         </label>
@@ -169,14 +204,23 @@ function NewProductForm() {
           <input
             type="checkbox"
             checked={Boolean(form.showMessenger)}
-            onChange={(event) => setForm((prev) => ({ ...prev, showMessenger: event.target.checked }))}
+            onChange={(event) =>
+              setForm((prev) => ({
+                ...prev,
+                showMessenger: event.target.checked,
+              }))
+            }
           />
           Show Messenger
         </label>
 
         {error ? <p className="text-red-600">{error}</p> : null}
 
-        <button className="rounded bg-blue-600 px-4 py-2 text-white" type="submit" disabled={loading}>
+        <button
+          className="rounded bg-blue-600 px-4 py-2 text-white disabled:opacity-60"
+          type="submit"
+          disabled={loading || categories.length === 0}
+        >
           {loading ? "Creating..." : "Create Product"}
         </button>
       </form>

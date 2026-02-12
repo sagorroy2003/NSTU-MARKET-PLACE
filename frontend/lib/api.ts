@@ -1,25 +1,8 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
 
-<<<<<<< codex/add-step-by-step-feature
-type RequestOptions = Omit<RequestInit, "body"> & {
+export type RequestOptions = Omit<RequestInit, "body"> & {
   body?: unknown;
-  token?: string;
-};
-
-type Product = {
-  id: number;
-  userId: number;
-  categoryId: number;
-  title: string;
-  description?: string;
-  price: number | string;
-  location?: string;
-  imageUrl?: string;
-  isSold: boolean;
-=======
-type RequestOptions = RequestInit & {
-  body?: unknown;
->>>>>>> main
 };
 
 export class ApiClientError extends Error {
@@ -32,25 +15,17 @@ export class ApiClientError extends Error {
   }
 }
 
-<<<<<<< codex/add-step-by-step-feature
-function getStoredToken(): string | null {
-=======
 function getToken(): string | null {
->>>>>>> main
-  if (typeof window === "undefined") {
-    return null;
-  }
-
+  if (typeof window === "undefined") return null;
   return localStorage.getItem("token");
 }
 
-export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
+export async function apiRequest<T>(
+  path: string,
+  options: RequestOptions = {}
+): Promise<T> {
   const headers = new Headers(options.headers);
-<<<<<<< codex/add-step-by-step-feature
-  const token = options.token || getStoredToken();
-=======
   const token = getToken();
->>>>>>> main
 
   if (!headers.has("Content-Type") && options.body !== undefined) {
     headers.set("Content-Type", "application/json");
@@ -71,11 +46,9 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
 
     try {
       const errorData = (await response.json()) as { message?: string };
-      if (errorData.message) {
-        message = errorData.message;
-      }
-    } catch (_error) {
-      // ignore JSON parse errors for non-JSON responses
+      if (errorData?.message) message = errorData.message;
+    } catch {
+      // ignore non-JSON errors
     }
 
     throw new ApiClientError(response.status, message);
@@ -87,18 +60,29 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
 
   return (await response.json()) as T;
 }
-<<<<<<< codex/add-step-by-step-feature
 
-export function getMyProducts(token: string): Promise<Product[]> {
-  return apiRequest<Product[]>("/products/me", { token });
+/** ---- Optional typed helpers (good DX) ---- */
+
+export type Product = {
+  id: number;
+  userId: number;
+  categoryId: number;
+  title: string;
+  description?: string;
+  price: number | string;
+  location?: string;
+  imageUrl?: string;
+  isSold: boolean;
+};
+
+export function getMyProducts(): Promise<Product[]> {
+  return apiRequest<Product[]>("/products/me");
 }
 
-export function markProductSold(id: number, token: string): Promise<Product> {
-  return apiRequest<Product>(`/products/${id}/sold`, { method: "PATCH", token });
+export function markProductSold(id: number): Promise<Product> {
+  return apiRequest<Product>(`/products/${id}/sold`, { method: "PATCH" });
 }
 
-export function deleteProduct(id: number, token: string): Promise<void> {
-  return apiRequest<void>(`/products/${id}`, { method: "DELETE", token });
+export function deleteProduct(id: number): Promise<void> {
+  return apiRequest<void>(`/products/${id}`, { method: "DELETE" });
 }
-=======
->>>>>>> main

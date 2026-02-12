@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-import { Navbar } from "../components/navbar";
-import { AuthProvider } from "../context/auth-context";
+import { Navbar } from "@/components/navbar";
+import { AuthProvider } from "@/context/auth-context";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -11,15 +11,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <AuthProvider>
           <Navbar />
-          <main className="mx-auto w-full max-w-5xl px-4 py-6">{children}</main>
+          <main className="mx-auto w-full max-w-5xl px-4 py-6">
+            {children}
+          </main>
         </AuthProvider>
       </body>
     </html>

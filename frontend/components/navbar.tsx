@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { useAuth } from "../context/auth-context";
+import { useAuth } from "@/context/auth-context";
 
 export function Navbar() {
   const { user, logout } = useAuth();
