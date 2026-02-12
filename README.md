@@ -195,5 +195,108 @@ Use this checklist before merging feature work into main:
 - [ ] Environment variables are configured on Koyeb/Vercel.
 - [ ] End-to-end smoke test passes on deployed frontend + backend.
 
-=======
-main
+## 10. Step-by-Step Build Plan (Feature Delivery)
+
+This section converts the MVP into practical development slices so the team can build and validate one feature set at a time.
+
+### Step 1 — Project Bootstrap
+
+- Create two apps in one repo (or two repos):
+  - `frontend/` with Next.js
+  - `backend/` with Express + Prisma
+- Add a shared `.env.example` for required variables.
+- Set up formatting/linting and basic CI (lint + build).
+
+**Definition of done**
+- Frontend runs locally.
+- Backend runs locally.
+- Both pass lint/build checks.
+
+### Step 2 — Database & Prisma Foundation
+
+- Initialize MySQL schema using Prisma models for `User`, `Category`, `Product`.
+- Add migration files and seed script for default categories.
+- Verify constraints:
+  - Unique email
+  - Product belongs to valid user + category
+
+**Definition of done**
+- `prisma migrate` completes successfully.
+- Seed inserts category records.
+
+### Step 3 — Authentication Feature
+
+- Implement signup with university-domain email validation.
+- Hash passwords with bcrypt.
+- Implement login endpoint returning JWT.
+- Add auth middleware for protected routes.
+
+**Definition of done**
+- Non-university emails are rejected.
+- Private routes fail without valid JWT.
+
+### Step 4 — User Profile + Contact Methods
+
+- Build profile read/update endpoints.
+- Support optional `phone_number` and `messenger_username`.
+- Build frontend profile page with validation.
+
+**Definition of done**
+- User can save optional contact fields.
+- Updated fields are reflected in API and UI.
+
+### Step 5 — Create Listing Feature
+
+- Add create-listing API with title, description, price, category, location, image URL.
+- Integrate Cloudinary upload from frontend.
+- Add per-listing contact visibility toggles.
+
+**Definition of done**
+- Seller can publish listing with image.
+- Invalid category or missing required fields are rejected.
+
+### Step 6 — Browse, Filter, Search
+
+- Build homepage feed ordered by newest.
+- Add category filter endpoint/query.
+- Add keyword search over title/description.
+
+**Definition of done**
+- Feed is sorted by `created_at DESC`.
+- Category and search behavior match acceptance criteria.
+
+### Step 7 — My Listings Dashboard
+
+- Build seller dashboard endpoints/UI:
+  - list own products
+  - edit
+  - delete
+  - mark as sold
+- Add ownership checks so only creator can mutate listing.
+
+**Definition of done**
+- Seller can fully manage own listings.
+- Cross-user edits/deletes are blocked.
+
+### Step 8 — Product Detail Contact Reveal Rules
+
+- On product detail, show only methods enabled for that listing.
+- Enforce prerequisites:
+  - WhatsApp shown only if toggle is true **and** phone exists
+  - Messenger shown only if toggle is true **and** username exists
+- Generate direct links (`mailto:`, `wa.me`, `m.me`).
+
+**Definition of done**
+- Buyer sees only seller-approved methods.
+- Hidden methods are never leaked by API.
+
+### Step 9 — Hardening, Testing, and Deployment
+
+- Add API tests for auth, listing permissions, and contact visibility.
+- Add frontend smoke flows: signup/login/create listing/filter/search.
+- Deploy backend (Koyeb) and frontend (Vercel).
+- Configure production environment variables.
+
+**Definition of done**
+- MVP acceptance checklist is fully checked.
+- Deployed app passes end-to-end smoke test.
