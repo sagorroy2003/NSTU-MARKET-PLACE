@@ -5,3 +5,4 @@ backend/dist/
 frontend/.next/
 .env
 *.log
+.env.local
